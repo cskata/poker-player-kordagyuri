@@ -21,18 +21,13 @@ public class Player {
         JsonObject jsonObject = request.getAsJsonObject();
         int buyIn = jsonObject.get("current_buy_in").getAsInt();
 
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
-        JsonArray communityCards = jsonObject.getAsJsonArray("community_cards");
-        List<PokerCard> community = new ArrayList<>();
+        List<PokerCard> community = getCommunityCards(jsonObject);
+        JsonObject gyuri = getGyuri(jsonObject);
 
-        for(int i=0; i<communityCards.size(); i++){
-            community.add(gson.fromJson(communityCards.get(i), PokerCard.class));
-        }
+        return buyIn + 1;
+    }
 
-        System.err.println(community.toString());
-
-
+    private static JsonObject getGyuri(JsonObject jsonObject) {
         JsonArray players = jsonObject.get("players").getAsJsonArray();
 
         List<JsonObject> playersAsString = IntStream.range(0, players.size())
@@ -43,8 +38,21 @@ public class Player {
         JsonObject currentPlayer = playersAsString.get(0);
 
         System.err.println(currentPlayer.get("name").getAsString());
+        return currentPlayer;
+    }
 
-        return buyIn + 1;
+    private static List<PokerCard> getCommunityCards(JsonObject jsonObject) {
+        List<PokerCard> community = new ArrayList<>();
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+        JsonArray communityCards = jsonObject.getAsJsonArray("community_cards");
+
+        for (int i = 0; i < communityCards.size(); i++) {
+            community.add(gson.fromJson(communityCards.get(i), PokerCard.class));
+        }
+
+        System.err.println(community.toString());
+        return community;
     }
 
     public static void showdown(JsonElement game) {
