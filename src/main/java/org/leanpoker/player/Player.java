@@ -10,6 +10,8 @@ import org.leanpoker.player.card.PokerCard;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Player {
 
@@ -29,6 +31,18 @@ public class Player {
         }
 
         System.err.println(community.toString());
+
+
+        JsonArray players = jsonObject.get("players").getAsJsonArray();
+
+        List<JsonObject> playersAsString = IntStream.range(0, players.size())
+                .mapToObj(index -> (players.get(index)).getAsJsonObject())
+                .filter(object -> object.get("name").getAsString().equals("KordaGyuri"))
+                .collect(Collectors.toList());
+
+        JsonObject currentPlayer = playersAsString.get(0);
+
+        System.err.println(currentPlayer.get("name").getAsString());
 
         return buyIn + 1;
     }
