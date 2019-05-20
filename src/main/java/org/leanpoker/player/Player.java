@@ -71,7 +71,7 @@ public class Player {
                 return 0;
             }
         } else {
-            return buyIn + bet;
+            return bet;
         }
     }
 
