@@ -45,7 +45,7 @@ public class Player {
         JsonArray playerCards = currentPlayer.getAsJsonArray("hole_cards");
         List<PokerCard> holeCards = new ArrayList<>();
 
-        for(int i=0; i<holeCards.size(); i++){
+        for(int i=0; i<playerCards.size(); i++){
             holeCards.add(gson.fromJson(playerCards.get(i), PokerCard.class));
         }
 
