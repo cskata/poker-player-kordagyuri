@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class Player {
 
-    static final String VERSION = "Ghost Protocol 2.0";
+    static final String VERSION = "Ghost Protocol 2.7.32";
 
     public static int betRequest(JsonElement request) {
         JsonObject jsonObject = request.getAsJsonObject();
@@ -27,6 +27,8 @@ public class Player {
         for(int i=0; i<communityCards.size(); i++){
             community.add(gson.fromJson(communityCards.get(i), PokerCard.class));
         }
+
+        System.err.println(community.toString());
 
         return buyIn + 1;
     }
