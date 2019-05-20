@@ -92,7 +92,7 @@ public class Player {
             if(betToCall <20){
                 return betToCall;
             } else {
-                return 0;
+                return raise;
             }
         }
     }
