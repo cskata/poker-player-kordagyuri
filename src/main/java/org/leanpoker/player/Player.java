@@ -99,7 +99,7 @@ public class Player {
         } else {
             if (betToCall < 20 && gyuri.get("bet").getAsInt() < 150) {
                 //System.err.println("buyIn < 800, betToCall < 20, return betToCall");
-                return betToCall;
+                return betToCall + raise;
             } else {
                 return 0;
             }
