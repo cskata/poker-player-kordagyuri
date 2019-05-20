@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "Ghost Protocol 2.7.34";
+    static final String VERSION = "Fallout 1.0";
 
     public static int betRequest(JsonElement request) {
         JsonObject jsonObject = request.getAsJsonObject();
@@ -42,7 +42,16 @@ public class Player {
 
         JsonObject currentPlayer = playersAsString.get(0);
 
+        JsonArray playerCards = currentPlayer.getAsJsonArray("hole_cards");
+        List<PokerCard> holeCards = new ArrayList<>();
+
+        for(int i=0; i<communityCards.size(); i++){
+            holeCards.add(gson.fromJson(playerCards.get(i), PokerCard.class));
+        }
+
         System.err.println(currentPlayer.get("name").getAsString());
+
+        System.err.println(holeCards.toString());
 
         return buyIn + 1;
     }
