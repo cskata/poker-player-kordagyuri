@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "TopGun 1.0.5";
+    static final String VERSION = "TopGun 1.0.6";
     private static List<PokerCard> communityCards = new ArrayList<>();
     private static Gson gson = new GsonBuilder().create();
     private static JsonObject gyuri;
@@ -99,7 +99,7 @@ public class Player {
         } else {
             if (betToCall < 20 && gyuri.get("bet").getAsInt() < 150) {
                 System.err.println("buyIn < 800, betToCall < 20, return betToCall");
-                return betToCall;
+                return betToCall + raise;
             } else {
                 return 0;
             }
