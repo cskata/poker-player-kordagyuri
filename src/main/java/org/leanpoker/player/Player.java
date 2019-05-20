@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class Player {
 
-    static final String VERSION = "Ghost Protocol 2.7.32";
+    static final String VERSION = "Ghost Protocol 2.7.33";
 
     public static int betRequest(JsonElement request) {
         JsonObject jsonObject = request.getAsJsonObject();
