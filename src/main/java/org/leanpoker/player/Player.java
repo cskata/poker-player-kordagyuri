@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "Rouge Nation 2.5";
+    static final String VERSION = "Rouge Nation 2.5.1";
     private static List<PokerCard> communityCards = new ArrayList<>();
     private static Gson gson = new GsonBuilder().create();
     private static JsonObject gyuri;
@@ -27,6 +27,12 @@ public class Player {
         getGyuri(jsonObject);
         getHoleCards();
         getCommunityCards(jsonObject);
+        System.err.println("In hand: Card1( Rank: " + holeCards.get(0).getRank() + ", Suit: " + holeCards.get(0).getSuit() +
+                ", Card2( Rank: " + holeCards.get(1).getRank() + ", Suit: " + holeCards.get(1).getSuit());
+
+        for (PokerCard card: communityCards) {
+            System.err.println("Community: Card( Rank: " + card.getRank() + ", Suit: " + card.getSuit());
+        }
 
         return evaluateCards(jsonObject);
     }
@@ -109,7 +115,6 @@ public class Player {
         for (int i = 0; i < playerCards.size(); i++) {
             holeCards.add(gson.fromJson(playerCards.get(i), PokerCard.class));
         }
-        System.err.println(holeCards);
     }
 
     private static void getGyuri(JsonObject jsonObject) {
@@ -128,7 +133,6 @@ public class Player {
         for (int i = 0; i < communityCards.size(); i++) {
             Player.communityCards.add(gson.fromJson(communityCards.get(i), PokerCard.class));
         }
-        System.err.println(Player.communityCards);
     }
 
     public static void showdown(JsonElement game) {
