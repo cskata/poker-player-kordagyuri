@@ -30,7 +30,7 @@ public class Player {
             community.add(gson.fromJson(communityCards.get(i), PokerCard.class));
         }
 
-        System.err.println(community.toString());
+        System.err.println(community);
 
 
         JsonArray players = jsonObject.get("players").getAsJsonArray();
@@ -51,7 +51,7 @@ public class Player {
 
         System.err.println(currentPlayer.get("name").getAsString());
 
-        System.err.println(holeCards.toString());
+        System.err.println(holeCards);
 
         return buyIn + 1;
     }
