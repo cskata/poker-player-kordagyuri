@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "Rouge Nation 1.1";
+    static final String VERSION = "Rouge Nation 2.0";
     private static List<PokerCard> communityCards = new ArrayList<>();
     private static Gson gson = new GsonBuilder().create();
     private static JsonObject gyuri;
@@ -58,6 +58,9 @@ public class Player {
 
         if (buyIn > 800) {
             boolean hasTwoPairs = cardRanks.keySet().stream().filter(key -> cardRanks.get(key) > 1).count() > 1;
+            if (hasBigBoysInHand(cardRanks) && communityCards.size() == 0) {
+                return buyIn;
+            }
             if (hasTwoPairs) {
                 return buyIn + bet;
             } else {
@@ -66,6 +69,13 @@ public class Player {
         } else {
             return buyIn + bet;
         }
+    }
+
+    private static boolean hasBigBoysInHand(Map<String, Integer> cardRanks) {
+        for (PokerCard holeCard : holeCards) {
+            cardRanks.merge(holeCard.getRank(), 1, Integer::sum);
+        }
+        return cardRanks.keySet().stream().filter(key -> key.matches("[JQKA]")).count() > 1;
     }
 
     private static void getHoleCards() {
