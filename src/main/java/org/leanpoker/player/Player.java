@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "Ghost Protocol 2.7.33";
+    static final String VERSION = "Ghost Protocol 2.7.34";
 
     public static int betRequest(JsonElement request) {
         JsonObject jsonObject = request.getAsJsonObject();
