@@ -15,15 +15,24 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "Ghost Protocol 2.7.34";
+    static final String VERSION = "Fallout 1.0";
 
     public static int betRequest(JsonElement request) {
         JsonObject jsonObject = request.getAsJsonObject();
         int buyIn = jsonObject.get("current_buy_in").getAsInt();
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
 
         List<PokerCard> community = getCommunityCards(jsonObject);
         JsonObject gyuri = getGyuri(jsonObject);
 
+        JsonArray playerCards = gyuri.getAsJsonArray("hole_cards");
+        List<PokerCard> holeCards = new ArrayList<>();
+
+        for(int i=0; i<community.size(); i++){
+            holeCards.add(gson.fromJson(playerCards.get(i), PokerCard.class));
+        }
+        System.err.println(holeCards);
         return buyIn + 1;
     }
 
