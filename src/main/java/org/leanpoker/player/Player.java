@@ -56,7 +56,7 @@ public class Player {
         PokerCard hand1 = holeCards.get(0);
         PokerCard hand2 =holeCards.get(1);
 
-        if(buyIn > 10) {
+        if(buyIn > 800) {
             if (hand1.getRank().equals(hand2.getRank())) {
                 return buyIn + 10;
             } else {
