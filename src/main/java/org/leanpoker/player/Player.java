@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "Rouge Nation 2.5.2";
+    static final String VERSION = "TopGun 1.0";
     private static List<PokerCard> communityCards = new ArrayList<>();
     private static Gson gson = new GsonBuilder().create();
     private static JsonObject gyuri;
@@ -89,7 +89,11 @@ public class Player {
                 return 0;
             }
         } else {
-            return betToCall;
+            if(betToCall <20){
+                return betToCall;
+            } else {
+                return 0;
+            }
         }
     }
 
