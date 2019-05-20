@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "TopGun 1.2";
+    static final String VERSION = "TopGun 1.2.1";
     private static List<PokerCard> communityCards = new ArrayList<>();
     private static Gson gson = new GsonBuilder().create();
     private static JsonObject gyuri;
@@ -70,15 +70,17 @@ public class Player {
                 return 1000;
             }
 
+            if (cardRanks.containsValue(3) && hasPairInHand()) {
+                //System.err.println("At least 3 cards down, drill");
+                return 10000;
+            }
+
             if (cardRanks.containsValue(4)) {
                 //System.err.println("At least 3 cards down, poker");
                 return 10000;
             } else if (cardRanks.containsValue(3)) {
                 //System.err.println("At least 3 cards down, drill");
                 raise = 100;
-            } else if (cardRanks.containsValue(3) && hasPairInHand()) {
-                //System.err.println("At least 3 cards down, drill");
-                return 10000;
             } else if (cardRanks.containsValue(2)) {
                 //System.err.println("At least 3 cards down, at least 1 pair");
                 raise = 50;
