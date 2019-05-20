@@ -8,13 +8,15 @@ import com.google.gson.JsonObject;
 import org.leanpoker.player.card.PokerCard;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "Fallout 2.8";
+    static final String VERSION = "Rouge Nation 1.0";
     private static List<PokerCard> communityCards = new ArrayList<>();
     private static Gson gson = new GsonBuilder().create();
     private static JsonObject gyuri;
@@ -31,18 +33,39 @@ public class Player {
 
     private static int evaluateCards(JsonObject jsonObject) {
         int buyIn = jsonObject.get("current_buy_in").getAsInt();
+        int bet = 1;
 
+        Map<String, Integer> cardRanks;
         PokerCard hand1 = holeCards.get(0);
         PokerCard hand2 = holeCards.get(1);
 
+        if (communityCards.size() >= 3) {
+            cardRanks = new HashMap<>();
+            for (PokerCard communityCard : communityCards) {
+                cardRanks.merge(communityCard.getRank(), 1, Integer::sum);
+            }
+            for (PokerCard holeCard : holeCards) {
+                cardRanks.merge(holeCard.getRank(), 1, Integer::sum);
+            }
+            if (cardRanks.containsValue(4)) {
+                bet = buyIn * 10;
+            } else if (cardRanks.containsValue(3)) {
+                bet = buyIn;
+            } else if (cardRanks.containsValue(2)) {
+                bet = buyIn / 2;
+            } else {
+                bet = -1;
+            }
+        }
+
         if (buyIn > 800) {
             if (hand1.getRank().equals(hand2.getRank()) || hand1.getRank().matches("[JQKA]") && hand2.getRank().matches("[JQKA]")) {
-                return buyIn + 10;
+                return buyIn + bet;
             } else {
                 return 0;
             }
         } else {
-            return buyIn + 1;
+            return buyIn + bet;
         }
     }
 
