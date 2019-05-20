@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "Rouge Nation 2.1.3";
+    static final String VERSION = "Rouge Nation 2.2";
     private static List<PokerCard> communityCards = new ArrayList<>();
     private static Gson gson = new GsonBuilder().create();
     private static JsonObject gyuri;
@@ -40,6 +40,10 @@ public class Player {
 
         if (hasBigBoysInHand(cardRanks) && hasPairInHand()) {
             return 1000;
+        }
+
+        if (hasBigBoysInHand(cardRanks) && communityCards.size() == 0) {
+            bet = buyIn;
         }
 
         if (communityCards.size() >= 3) {
