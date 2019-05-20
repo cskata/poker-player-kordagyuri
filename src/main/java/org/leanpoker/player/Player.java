@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "TopGun 1.2.1";
+    static final String VERSION = "Vanilla Sky 1.0";
     private static List<PokerCard> communityCards = new ArrayList<>();
     private static Gson gson = new GsonBuilder().create();
     private static JsonObject gyuri;
@@ -34,7 +34,8 @@ public class Player {
             System.err.println("Community: Card( Rank: " + card.getRank() + ", Suit: " + card.getSuit());
         }*/
 
-        return evaluateCards(jsonObject);
+        //return evaluateCards(jsonObject);
+        return 10000;
     }
 
     private static int evaluateCards(JsonObject jsonObject) {
