@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "Fallout 2.1";
+    static final String VERSION = "Fallout 2.7";
 
     public static int betRequest(JsonElement request) {
         JsonObject jsonObject = request.getAsJsonObject();
@@ -56,8 +56,8 @@ public class Player {
         PokerCard hand1 = holeCards.get(0);
         PokerCard hand2 =holeCards.get(1);
 
-        if(buyIn > 10) {
-            if (hand1.getRank().equals(hand2.getRank())) {
+        if(buyIn > 800) {
+            if (hand1.getRank().equals(hand2.getRank()) || hand1.getRank().matches("[JQKA]") && hand2.getRank().matches("[JQKA]")) {
                 return buyIn + 10;
             } else {
                 return 0;
