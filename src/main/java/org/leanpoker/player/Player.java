@@ -63,10 +63,8 @@ public class Player {
                 return 0;
             }
         } else {
-            return 0;
+            return buyIn + 1;
         }
-
-        return buyIn + 1;
     }
 
     public static void showdown(JsonElement game) {
