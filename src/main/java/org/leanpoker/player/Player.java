@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "Vanilla Sky 1.0";
+    static final String VERSION = "Vanilla Sky 1.5";
     private static List<PokerCard> communityCards = new ArrayList<>();
     private static Gson gson = new GsonBuilder().create();
     private static JsonObject gyuri;
@@ -34,8 +34,7 @@ public class Player {
             System.err.println("Community: Card( Rank: " + card.getRank() + ", Suit: " + card.getSuit());
         }*/
 
-        //return evaluateCards(jsonObject);
-        return 10000;
+        return evaluateCards(jsonObject);
     }
 
     private static int evaluateCards(JsonObject jsonObject) {
@@ -46,7 +45,9 @@ public class Player {
         Map<String, Integer> cardRanks = new HashMap<>();
         Map<String, Integer> cardSuits = new HashMap<>();
 
-        if(communityCards.size() == 0 && !hasPairInHand() && !hasBigBoysInHand() || !hasBigBoysInHand() && communityCards.size() == 0 && !hasPairInHand() && !(holeCards.get(0).getSuit().equals(holeCards.get(1).getSuit())) ) return 0;
+        if(communityCards.size() == 0 && !hasPairInHand() && !hasBigBoysInHand() ||
+                !hasBigBoysInHand() && communityCards.size() == 0 && !hasPairInHand() && !(holeCards.get(0).getSuit().equals(holeCards.get(1).getSuit())) )
+            return 0;
 
         if (hasBigBoysInHand() && hasPairInHand()) {
             //System.err.println("hasBigBoysInHand() && hasPairInHand()");
@@ -70,7 +71,11 @@ public class Player {
 
             if (cardSuits.containsValue(5)) {
                 //System.err.println("At least 3 cards down, flush");
-                return 1000;
+                return 10000;
+            }
+
+            if(cardSuits.containsValue(4)){
+                return 300;
             }
 
             if (cardRanks.containsValue(3) && hasPairInHand()) {
@@ -95,7 +100,7 @@ public class Player {
             raise = 150;
         }
 
-        if (buyIn > 800) {
+        if (buyIn > 300) {
             boolean hasTwoPairs = cardRanks.keySet().stream().filter(key -> cardRanks.get(key) > 1).count() > 1;
             if (hasBigBoysInHand() && communityCards.size() == 0) {
                 //System.err.println("buyIn > 800, hasBigBoysInHand() && communityCards.size() == 0");
