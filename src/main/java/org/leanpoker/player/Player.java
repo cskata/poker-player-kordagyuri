@@ -35,8 +35,8 @@ public class Player {
         int buyIn = jsonObject.get("current_buy_in").getAsInt();
         int bet = 1;
 
-        Map<String, Integer> cardRanks;
-        cardRanks = new HashMap<>();
+        Map<String, Integer> cardRanks = new HashMap<>();
+        Map<String, Integer> cardSuits = new HashMap<>();
 
         if (hasBigBoysInHand(cardRanks) && hasPairInHand()) {
             return 1000;
@@ -45,9 +45,14 @@ public class Player {
         if (communityCards.size() >= 3) {
             for (PokerCard communityCard : communityCards) {
                 cardRanks.merge(communityCard.getRank(), 1, Integer::sum);
+                cardSuits.merge(communityCard.getSuit(), 1, Integer::sum);
             }
             for (PokerCard holeCard : holeCards) {
                 cardRanks.merge(holeCard.getRank(), 1, Integer::sum);
+                cardSuits.merge(holeCard.getRank(), 1, Integer::sum);
+            }
+            if (cardSuits.containsValue(5)) {
+                return 1000;
             }
             if (cardRanks.containsValue(4)) {
                 bet = buyIn * 10;
