@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "TopGun 1.0.5";
+    static final String VERSION = "TopGun 1.0.6";
     private static List<PokerCard> communityCards = new ArrayList<>();
     private static Gson gson = new GsonBuilder().create();
     private static JsonObject gyuri;
@@ -27,12 +27,12 @@ public class Player {
         getGyuri(jsonObject);
         getHoleCards();
         getCommunityCards(jsonObject);
-        System.err.println("In hand: Card1( Rank: " + holeCards.get(0).getRank() + ", Suit: " + holeCards.get(0).getSuit() +
-                ", Card2( Rank: " + holeCards.get(1).getRank() + ", Suit: " + holeCards.get(1).getSuit());
+        /*System.err.println("In hand: Card1( Rank: " + holeCards.get(0).getRank() + ", Suit: " + holeCards.get(0).getSuit() +
+                ", Card2( Rank: " + holeCards.get(1).getRank() + ", Suit: " + holeCards.get(1).getSuit());*/
 
-        for (PokerCard card : communityCards) {
+        /*for (PokerCard card : communityCards) {
             System.err.println("Community: Card( Rank: " + card.getRank() + ", Suit: " + card.getSuit());
-        }
+        }*/
 
         return evaluateCards(jsonObject);
     }
@@ -46,12 +46,12 @@ public class Player {
         Map<String, Integer> cardSuits = new HashMap<>();
 
         if (hasBigBoysInHand() && hasPairInHand()) {
-            System.err.println("hasBigBoysInHand() && hasPairInHand()");
+            //System.err.println("hasBigBoysInHand() && hasPairInHand()");
             return 1000;
         }
 
         if (hasBigBoysInHand() && communityCards.size() == 0) {
-            System.err.println("hasBigBoysInHand() && communityCards.size() == 0");
+            //System.err.println("hasBigBoysInHand() && communityCards.size() == 0");
             raise = 10;
         }
 
@@ -66,18 +66,18 @@ public class Player {
             }
 
             if (cardSuits.containsValue(5)) {
-                System.err.println("At least 3 cards down, flush");
+                //System.err.println("At least 3 cards down, flush");
                 return 1000;
             }
 
             if (cardRanks.containsValue(4)) {
-                System.err.println("At least 3 cards down, poker");
+                //System.err.println("At least 3 cards down, poker");
                 return 1000;
             } else if (cardRanks.containsValue(3)) {
-                System.err.println("At least 3 cards down, drill");
+                //System.err.println("At least 3 cards down, drill");
                 raise = 100;
             } else if (cardRanks.containsValue(2)) {
-                System.err.println("At least 3 cards down, at least 1 pair");
+                //System.err.println("At least 3 cards down, at least 1 pair");
                 raise = 50;
             } else {
                 return 0;
@@ -87,18 +87,18 @@ public class Player {
         if (buyIn > 800) {
             boolean hasTwoPairs = cardRanks.keySet().stream().filter(key -> cardRanks.get(key) > 1).count() > 1;
             if (hasBigBoysInHand() && communityCards.size() == 0) {
-                System.err.println("buyIn > 800, hasBigBoysInHand() && communityCards.size() == 0");
+                //System.err.println("buyIn > 800, hasBigBoysInHand() && communityCards.size() == 0");
                 return betToCall;
             }
             if (hasTwoPairs) {
-                System.err.println("buyIn > 800, hasTwoPairs");
+                //System.err.println("buyIn > 800, hasTwoPairs");
                 return betToCall + raise;
             } else {
                 return 0;
             }
         } else {
             if (betToCall < 20 && gyuri.get("bet").getAsInt() < 150) {
-                System.err.println("buyIn < 800, betToCall < 20, return betToCall");
+                //System.err.println("buyIn < 800, betToCall < 20, return betToCall");
                 return betToCall;
             } else {
                 return 0;
