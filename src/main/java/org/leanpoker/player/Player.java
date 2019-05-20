@@ -20,23 +20,19 @@ public class Player {
     public static int betRequest(JsonElement request) {
         JsonObject jsonObject = request.getAsJsonObject();
         int buyIn = jsonObject.get("current_buy_in").getAsInt();
+
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
+        JsonArray communityCards = jsonObject.getAsJsonArray("community_cards");
+        List<PokerCard> community = new ArrayList<>();
 
-        List<PokerCard> community = getCommunityCards(jsonObject);
-        JsonObject gyuri = getGyuri(jsonObject);
-
-        JsonArray playerCards = gyuri.getAsJsonArray("hole_cards");
-        List<PokerCard> holeCards = new ArrayList<>();
-
-        for(int i=0; i<community.size(); i++){
-            holeCards.add(gson.fromJson(playerCards.get(i), PokerCard.class));
+        for(int i=0; i<communityCards.size(); i++){
+            community.add(gson.fromJson(communityCards.get(i), PokerCard.class));
         }
-        System.err.println(holeCards);
-        return buyIn + 1;
-    }
 
-    private static JsonObject getGyuri(JsonObject jsonObject) {
+        System.err.println(community);
+
+
         JsonArray players = jsonObject.get("players").getAsJsonArray();
 
         List<JsonObject> playersAsString = IntStream.range(0, players.size())
@@ -46,22 +42,18 @@ public class Player {
 
         JsonObject currentPlayer = playersAsString.get(0);
 
-        System.err.println(currentPlayer.get("name").getAsString());
-        return currentPlayer;
-    }
+        JsonArray playerCards = currentPlayer.getAsJsonArray("hole_cards");
+        List<PokerCard> holeCards = new ArrayList<>();
 
-    private static List<PokerCard> getCommunityCards(JsonObject jsonObject) {
-        List<PokerCard> community = new ArrayList<>();
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
-        JsonArray communityCards = jsonObject.getAsJsonArray("community_cards");
-
-        for (int i = 0; i < communityCards.size(); i++) {
-            community.add(gson.fromJson(communityCards.get(i), PokerCard.class));
+        for(int i=0; i<playerCards.size(); i++){
+            holeCards.add(gson.fromJson(playerCards.get(i), PokerCard.class));
         }
 
-        System.err.println(community.toString());
-        return community;
+        System.err.println(currentPlayer.get("name").getAsString());
+
+        System.err.println(holeCards);
+
+        return buyIn + 1;
     }
 
     public static void showdown(JsonElement game) {
