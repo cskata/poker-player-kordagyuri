@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "Rouge Nation 2.2.1";
+    static final String VERSION = "Rouge Nation 2.5";
     private static List<PokerCard> communityCards = new ArrayList<>();
     private static Gson gson = new GsonBuilder().create();
     private static JsonObject gyuri;
@@ -33,7 +33,8 @@ public class Player {
 
     private static int evaluateCards(JsonObject jsonObject) {
         int buyIn = jsonObject.get("current_buy_in").getAsInt();
-        int bet = 1;
+        int betToCall = buyIn - gyuri.get("bet").getAsInt();
+        int raise = 0;
 
         Map<String, Integer> cardRanks = new HashMap<>();
         Map<String, Integer> cardSuits = new HashMap<>();
@@ -43,7 +44,7 @@ public class Player {
         }
 
         if (hasBigBoysInHand(cardRanks) && communityCards.size() == 0) {
-            bet = buyIn;
+            raise = 10;
         }
 
         if (communityCards.size() >= 3) {
@@ -59,28 +60,28 @@ public class Player {
                 return 1000;
             }
             if (cardRanks.containsValue(4)) {
-                bet = buyIn * 10;
+                return 1000;
             } else if (cardRanks.containsValue(3)) {
-                bet = buyIn;
+                raise = 100;
             } else if (cardRanks.containsValue(2)) {
-                bet = buyIn / 2;
+                raise = 50;
             } else {
-                bet = -1 * buyIn;
+                return 0;
             }
         }
 
         if (buyIn > 800) {
             boolean hasTwoPairs = cardRanks.keySet().stream().filter(key -> cardRanks.get(key) > 1).count() > 1;
             if (hasBigBoysInHand(cardRanks) && communityCards.size() == 0) {
-                return buyIn;
+                return betToCall;
             }
             if (hasTwoPairs) {
-                return buyIn + bet;
+                return betToCall + raise;
             } else {
                 return 0;
             }
         } else {
-            return bet;
+            return betToCall;
         }
     }
 
