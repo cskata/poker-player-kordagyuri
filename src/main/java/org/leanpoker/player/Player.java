@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "TopGun 1.0.6";
+    static final String VERSION = "TopGun 1.1";
     private static List<PokerCard> communityCards = new ArrayList<>();
     private static Gson gson = new GsonBuilder().create();
     private static JsonObject gyuri;
@@ -83,6 +83,9 @@ public class Player {
                 return 0;
             }
         }
+        if(hasPairInHand()) {
+            raise = 150;
+        }
 
         if (buyIn > 800) {
             boolean hasTwoPairs = cardRanks.keySet().stream().filter(key -> cardRanks.get(key) > 1).count() > 1;
@@ -97,7 +100,7 @@ public class Player {
                 return 0;
             }
         } else {
-            if (betToCall < 20 && gyuri.get("bet").getAsInt() < 150) {
+            if (betToCall < 20 && gyuri.get("bet").getAsInt() < 150 || hasPairInHand()) {
                 //System.err.println("buyIn < 800, betToCall < 20, return betToCall");
                 return betToCall + raise;
             } else {
