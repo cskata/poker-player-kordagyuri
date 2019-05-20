@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "TopGun 1.0";
+    static final String VERSION = "TopGun 1.0.5";
     private static List<PokerCard> communityCards = new ArrayList<>();
     private static Gson gson = new GsonBuilder().create();
     private static JsonObject gyuri;
@@ -30,7 +30,7 @@ public class Player {
         System.err.println("In hand: Card1( Rank: " + holeCards.get(0).getRank() + ", Suit: " + holeCards.get(0).getSuit() +
                 ", Card2( Rank: " + holeCards.get(1).getRank() + ", Suit: " + holeCards.get(1).getSuit());
 
-        for (PokerCard card: communityCards) {
+        for (PokerCard card : communityCards) {
             System.err.println("Community: Card( Rank: " + card.getRank() + ", Suit: " + card.getSuit());
         }
 
@@ -89,7 +89,7 @@ public class Player {
                 return 0;
             }
         } else {
-            if(betToCall <20){
+            if (betToCall < 20 && gyuri.get("bet").getAsInt() < 150) {
                 return betToCall;
             } else {
                 return 0;
