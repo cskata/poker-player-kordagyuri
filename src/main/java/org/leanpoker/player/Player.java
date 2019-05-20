@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "Rouge Nation 2.2";
+    static final String VERSION = "Rouge Nation 2.2.1";
     private static List<PokerCard> communityCards = new ArrayList<>();
     private static Gson gson = new GsonBuilder().create();
     private static JsonObject gyuri;
@@ -92,7 +92,14 @@ public class Player {
         for (PokerCard holeCard : holeCards) {
             cardRanks.merge(holeCard.getRank(), 1, Integer::sum);
         }
-        return cardRanks.keySet().stream().filter(key -> key.matches("[JQKA]")).count() > 1;
+
+        boolean hasTwoDifferent = cardRanks.keySet().stream()
+                .filter(key -> key.matches("[JQKA]"))
+                .count() > 1;
+        boolean hasSameBiggies = cardRanks.keySet().stream()
+                .filter(key -> key.matches("[JQKA]")).anyMatch(key -> cardRanks.get(key) > 1);
+
+        return (hasTwoDifferent || hasSameBiggies);
     }
 
     private static void getHoleCards() {
