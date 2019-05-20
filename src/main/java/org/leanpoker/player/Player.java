@@ -45,6 +45,8 @@ public class Player {
         Map<String, Integer> cardRanks = new HashMap<>();
         Map<String, Integer> cardSuits = new HashMap<>();
 
+        if(communityCards.size() == 0 && !hasPairInHand() && !hasBigBoysInHand()) return 0;
+
         if (hasBigBoysInHand() && hasPairInHand()) {
             //System.err.println("hasBigBoysInHand() && hasPairInHand()");
             return 1000;
