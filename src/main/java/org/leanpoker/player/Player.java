@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "Fallout 1.0";
+    static final String VERSION = "Fallout 2.0";
 
     public static int betRequest(JsonElement request) {
         JsonObject jsonObject = request.getAsJsonObject();
@@ -52,6 +52,17 @@ public class Player {
         System.err.println(currentPlayer.get("name").getAsString());
 
         System.err.println(holeCards);
+
+        PokerCard hand1 = holeCards.get(0);
+        PokerCard hand2 =holeCards.get(1);
+
+        if(buyIn > 10) {
+            if (hand1.getRank().equals(hand2.getRank())) {
+                return buyIn + 10;
+            }
+        } else {
+            return 0;
+        }
 
         return buyIn + 1;
     }
