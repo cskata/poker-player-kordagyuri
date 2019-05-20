@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "Rouge Nation 2.1.2";
+    static final String VERSION = "Rouge Nation 2.1.3";
     private static List<PokerCard> communityCards = new ArrayList<>();
     private static Gson gson = new GsonBuilder().create();
     private static JsonObject gyuri;
@@ -49,7 +49,7 @@ public class Player {
             }
             for (PokerCard holeCard : holeCards) {
                 cardRanks.merge(holeCard.getRank(), 1, Integer::sum);
-                cardSuits.merge(holeCard.getRank(), 1, Integer::sum);
+                cardSuits.merge(holeCard.getSuit(), 1, Integer::sum);
             }
             if (cardSuits.containsValue(5)) {
                 return 1000;
