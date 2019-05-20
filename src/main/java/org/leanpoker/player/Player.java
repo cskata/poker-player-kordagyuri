@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 public class Player {
 
-    static final String VERSION = "Rouge Nation 2.5.1";
+    static final String VERSION = "Rouge Nation 2.5.2";
     private static List<PokerCard> communityCards = new ArrayList<>();
     private static Gson gson = new GsonBuilder().create();
     private static JsonObject gyuri;
@@ -45,11 +45,11 @@ public class Player {
         Map<String, Integer> cardRanks = new HashMap<>();
         Map<String, Integer> cardSuits = new HashMap<>();
 
-        if (hasBigBoysInHand(cardRanks) && hasPairInHand()) {
+        if (hasBigBoysInHand() && hasPairInHand()) {
             return 1000;
         }
 
-        if (hasBigBoysInHand(cardRanks) && communityCards.size() == 0) {
+        if (hasBigBoysInHand() && communityCards.size() == 0) {
             raise = 10;
         }
 
@@ -62,9 +62,11 @@ public class Player {
                 cardRanks.merge(holeCard.getRank(), 1, Integer::sum);
                 cardSuits.merge(holeCard.getSuit(), 1, Integer::sum);
             }
+
             if (cardSuits.containsValue(5)) {
                 return 1000;
             }
+
             if (cardRanks.containsValue(4)) {
                 return 1000;
             } else if (cardRanks.containsValue(3)) {
@@ -78,7 +80,7 @@ public class Player {
 
         if (buyIn > 800) {
             boolean hasTwoPairs = cardRanks.keySet().stream().filter(key -> cardRanks.get(key) > 1).count() > 1;
-            if (hasBigBoysInHand(cardRanks) && communityCards.size() == 0) {
+            if (hasBigBoysInHand() && communityCards.size() == 0) {
                 return betToCall;
             }
             if (hasTwoPairs) {
@@ -95,7 +97,8 @@ public class Player {
         return holeCards.get(0).getRank().equals(holeCards.get(1).getRank());
     }
 
-    private static boolean hasBigBoysInHand(Map<String, Integer> cardRanks) {
+    private static boolean hasBigBoysInHand() {
+        Map<String, Integer> cardRanks = new HashMap<>();
         for (PokerCard holeCard : holeCards) {
             cardRanks.merge(holeCard.getRank(), 1, Integer::sum);
         }
